@@ -7,7 +7,7 @@
     <!-- Google Fonts for exquisite English & Arabic typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cairo:wght@300;400;600;700&family=Montserrat:ital,wght@0,300;0,500;0,700;1,300&family=Quicksand:wght@300;500;700&family=Tajawal:wght@300;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Amiri:ital@0;1&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Cairo:wght@300;400;600;700&family=Montserrat:ital,wght@0,300;0,500;0,700;1,300&family=Quicksand:wght@300;500;700&family=Tajawal:wght@300;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Amiri:ital@0;1&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -63,6 +63,12 @@
             gap: 10px;
         }
 
+        .nav-right-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
         .nav-tabs {
             display: flex;
             gap: 15px;
@@ -95,6 +101,28 @@
             box-shadow: var(--shadow-sm);
         }
 
+        .lang-toggle-btn {
+            background: white;
+            border: 1px solid #e0d1c2;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: var(--font-primary);
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--lana-wine);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .lang-toggle-btn:hover {
+            background: var(--coquette-pink);
+            color: white;
+            border-color: var(--coquette-pink);
+        }
+
         /* App Containers */
         .page-container {
             display: none;
@@ -117,11 +145,15 @@
         .app-layout {
             display: flex;
             gap: 30px;
-            flex-direction: row-reverse; /* For RTL layout compatibility */
+            flex-direction: row-reverse; /* Default for RTL */
+        }
+
+        html[dir="ltr"] .app-layout {
+            flex-direction: row; /* Adjusted for LTR */
         }
 
         @media (max-width: 1024px) {
-            .app-layout {
+            .app-layout, html[dir="ltr"] .app-layout {
                 flex-direction: column-reverse;
             }
         }
@@ -341,6 +373,11 @@
             gap: 5px;
         }
 
+        html[dir="ltr"] .item-actions {
+            left: auto;
+            right: 10px;
+        }
+
         .timeline-item:hover .item-actions {
             display: flex;
         }
@@ -441,6 +478,7 @@
             padding: 8px;
             border-radius: 12px;
             border: 1px dashed #e0d1c2;
+            position: relative;
         }
 
         .grid-card {
@@ -454,6 +492,11 @@
             border-left: 4px solid var(--coquette-pink);
         }
 
+        html[dir="rtl"] .grid-card {
+            border-left: none;
+            border-right: 4px solid var(--coquette-pink);
+        }
+
         .grid-card:hover {
             transform: translateY(-2px);
         }
@@ -463,6 +506,7 @@
             font-weight: bold;
             color: #8c7b72;
             margin-bottom: 5px;
+            outline: none;
         }
 
         .grid-card-text {
@@ -470,7 +514,41 @@
             outline: none;
         }
 
-        /* Style 3: Table Routine with Icons & Washi Tape polaroids */
+        .grid-card-actions {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            display: none;
+        }
+
+        html[dir="rtl"] .grid-card-actions {
+            right: auto;
+            left: 5px;
+        }
+
+        .grid-card:hover .grid-card-actions {
+            display: block;
+        }
+
+        .grid-add-btn {
+            background: rgba(251, 203, 201, 0.2);
+            border: 1px dashed var(--coquette-pink);
+            border-radius: 8px;
+            padding: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--lana-wine);
+            transition: all 0.2s;
+        }
+
+        .grid-add-btn:hover {
+            background: var(--coquette-pink);
+            color: white;
+        }
+
+        /* Style 3: Table Routine with Icons */
         .routine-table {
             width: 100%;
             border-collapse: separate;
@@ -499,9 +577,18 @@
             width: 120px;
         }
 
+        html[dir="rtl"] .routine-cell:first-child {
+            border-radius: 0 15px 15px 0;
+        }
+
         .routine-cell:last-child {
             border-radius: 0 15px 15px 0;
             text-align: left;
+        }
+
+        html[dir="rtl"] .routine-cell:last-child {
+            border-radius: 15px 0 0 15px;
+            text-align: right;
         }
 
         .cell-editable {
@@ -512,7 +599,6 @@
         .board-canvas {
             width: 100%;
             height: 750px;
-            background-image: url('https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&q=80&w=1400'); /* Cork texture */
             background-size: cover;
             border-radius: 32px;
             border: 16px solid #b1845f; /* Wood frame style */
@@ -656,10 +742,17 @@
 
     <!-- Header Navigation -->
     <header>
-        <a href="#" class="logo">🌸 Aesthetic Planner</a>
-        <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('schedule-page')">📅 الجدول الزمني (Schedule)</button>
-            <button class="tab-btn" onclick="switchTab('board-page')">📌 البورد الفني (Board)</button>
+        <a href="#" class="logo">🌸 <span data-i18n="logoTitle">Aesthetic Planner</span></a>
+        <div class="nav-right-group">
+            <div class="nav-tabs">
+                <button class="tab-btn active" onclick="switchTab('schedule-page', event)">
+                    📅 <span data-i18n="tabSchedule">الجدول الزمني (Schedule)</span>
+                </button>
+                <button class="tab-btn" onclick="switchTab('board-page', event)">
+                    📌 <span data-i18n="tabBoard">البورد الفني (Board)</span>
+                </button>
+            </div>
+            <button class="lang-toggle-btn" onclick="toggleLanguage()">🌐 English / العربية</button>
         </div>
     </header>
 
@@ -669,38 +762,39 @@
             
             <!-- Sidebar Controls for Schedule -->
             <div class="control-panel">
-                <h3 class="panel-title">✨ خيارات الجدول</h3>
+                <h3 class="panel-title">✨ <span data-i18n="scheduleOptions">خيارات الجدول</span></h3>
                 
                 <div class="control-group">
-                    <label>نمط التخطيط Layout</label>
+                    <label data-i18n="layoutStyle">نمط التخطيط Layout</label>
                     <div class="layout-selector">
-                        <button class="layout-btn active" onclick="setScheduleStyle('timeline')">مخطط زمني</button>
-                        <button class="layout-btn" onclick="setScheduleStyle('grid')">جدول أسبوعي</button>
-                        <button class="layout-btn" onclick="setScheduleStyle('table')">روتين الويكند</button>
+                        <button class="layout-btn active" id="btn-layout-timeline" onclick="setScheduleStyle('timeline')">مخطط زمني</button>
+                        <button class="layout-btn" id="btn-layout-grid" onclick="setScheduleStyle('grid')">جدول أسبوعي</button>
+                        <button class="layout-btn" id="btn-layout-table" onclick="setScheduleStyle('table')">روتين الويكند</button>
                     </div>
                 </div>
 
                 <div class="control-group">
-                    <label>الخط المستخدم Font</label>
+                    <label data-i18n="selectFont">الخط المستخدم Font</label>
                     <select id="fontSelect" onchange="changeScheduleFont(this.value)">
                         <option value="'Quicksand', 'Tajawal', sans-serif">عصري مبسط (Tajawal)</option>
                         <option value="'Cairo', sans-serif">ريادي مميز (Cairo)</option>
                         <option value="'Amiri', serif">كلاسيكي دافئ (Amiri)</option>
+                        <option value="'Aref Ruqaa', serif">رقعة فني (Aref Ruqaa)</option>
                         <option value="'Playfair Display', serif">أنيق فاخر (Playfair)</option>
                         <option value="'Caveat', cursive">يدوي لطيف (Caveat)</option>
                     </select>
                 </div>
 
                 <div class="control-group">
-                    <label>حجم الخط Font Size</label>
+                    <label data-i18n="fontSize">حجم الخط Font Size</label>
                     <div style="display:flex; gap:10px;">
-                        <button class="control-btn" onclick="adjustFontSize(1)">تكبير ➕</button>
-                        <button class="control-btn" onclick="adjustFontSize(-1)">تصغير ➖</button>
+                        <button class="control-btn" onclick="adjustFontSize(1)"><span data-i18n="fontIncrease">تكبير ➕</span></button>
+                        <button class="control-btn" onclick="adjustFontSize(-1)"><span data-i18n="fontDecrease">تصغير ➖</span></button>
                     </div>
                 </div>
 
                 <div class="control-group">
-                    <label>باليت الألوان Color Palette</label>
+                    <label data-i18n="colorPalette">باليت الألوان Color Palette</label>
                     <div class="color-palette">
                         <div class="color-swatch" style="background:#fbcbc9;" onclick="setThemeColor('#fbcbc9')"></div>
                         <div class="color-swatch" style="background:#8090a8;" onclick="setThemeColor('#8090a8')"></div>
@@ -710,8 +804,8 @@
                     </div>
                 </div>
 
-                <button class="control-btn accent" onclick="addNewScheduleItem()">➕ إضافة عنصر جديد</button>
-                <button class="control-btn" onclick="exportScheduleImage()">📸 تصدير كصورة</button>
+                <button class="control-btn accent" onclick="addNewScheduleItem()">➕ <span data-i18n="addNewItem">إضافة عنصر جديد</span></button>
+                <button class="control-btn" onclick="exportScheduleImage()">📸 <span data-i18n="exportImage">تصدير كصورة</span></button>
             </div>
 
             <!-- Workspace / Interactive Canvas -->
@@ -723,9 +817,9 @@
                     <div class="aesthetic-doodle" style="top:75%; left:15%; font-size:35px;">🤍</div>
 
                     <div class="schedule-header">
-                        <div class="schedule-title" contenteditable="true">MY WEEKEND ROUTINE</div>
+                        <div class="schedule-title" contenteditable="true" id="editable-title">MY WEEKEND ROUTINE</div>
                         <br>
-                        <div class="schedule-subtitle" contenteditable="true">Relax • Recharge • Enjoy</div>
+                        <div class="schedule-subtitle" contenteditable="true" id="editable-subtitle">Relax • Recharge • Enjoy</div>
                     </div>
 
                     <!-- Layout rendering area -->
@@ -744,10 +838,10 @@
             
             <!-- Sidebar Controls for Corkboard -->
             <div class="control-panel">
-                <h3 class="panel-title">📌 أدوات اللوحة</h3>
+                <h3 class="panel-title">📌 <span data-i18n="boardTools">أدوات اللوحة</span></h3>
                 
                 <div class="control-group">
-                    <label>إضافة ملاحظة ملونة</label>
+                    <label data-i18n="addSticky">إضافة ملاحظة ملونة</label>
                     <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:5px; margin-bottom:10px;">
                         <button class="control-btn" style="background:#fff5bc;" onclick="addStickyNote('#fff5bc')">💛</button>
                         <button class="control-btn" style="background:#ffcfe3;" onclick="addStickyNote('#ffcfe3')">🌸</button>
@@ -757,13 +851,19 @@
                 </div>
 
                 <div class="control-group">
-                    <label>رفع صورة بولارويد</label>
-                    <button class="control-btn accent" onclick="document.getElementById('boardImageUpload').click()">📷 رفع صورة للوحة</button>
+                    <label data-i18n="boardCover">صورة غلاف اللوحة</label>
+                    <button class="control-btn accent" onclick="document.getElementById('boardBgUpload').click()">🖼️ <span data-i18n="changeBgBtn">تغيير خلفية البورد</span></button>
+                    <input type="file" id="boardBgUpload" accept="image/*" style="display:none;" onchange="uploadBoardBackground(event)">
+                </div>
+
+                <div class="control-group">
+                    <label data-i18n="uploadPolaroid">رفع صورة بولارويد</label>
+                    <button class="control-btn" onclick="document.getElementById('boardImageUpload').click()">📷 <span data-i18n="uploadPolaroidBtn">رفع صورة للوحة</span></button>
                     <input type="file" id="boardImageUpload" accept="image/*" style="display:none;" onchange="uploadBoardImage(event)">
                 </div>
 
                 <div class="control-group">
-                    <label>إضافة ملصقات لطيفة (Stickers)</label>
+                    <label data-i18n="addSticker">إضافة ملصقات لطيفة (Stickers)</label>
                     <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:8px;">
                         <button class="control-btn" style="font-size:20px; padding:5px;" onclick="addSticker('🌸')">🌸</button>
                         <button class="control-btn" style="font-size:20px; padding:5px;" onclick="addSticker('🎀')">🎀</button>
@@ -776,12 +876,12 @@
                     </div>
                 </div>
 
-                <button class="control-btn" onclick="clearBoard()">🧹 تنظيف اللوحة</button>
+                <button class="control-btn" onclick="clearBoard()">🧹 <span data-i18n="clearBoard">تنظيف اللوحة</span></button>
             </div>
 
             <!-- Workspace: Interactive Corkboard Canvas -->
             <div class="main-workspace">
-                <div class="board-canvas" id="boardCanvas">
+                <div class="board-canvas" id="boardCanvas" style="background-image: url('https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&q=80&w=1400');">
                     <!-- Default elements on board for inspiration -->
                     <div class="board-item" style="top: 80px; left: 100px; transform: rotate(-5deg);" onmousedown="dragStart(event)">
                         <div class="item-control-overlay">
@@ -813,6 +913,76 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
+        // Data Translation & Languages Store
+        const i18n = {
+            ar: {
+                logoTitle: "Aesthetic Planner 🌸",
+                tabSchedule: "📅 الجدول الزمني (Schedule)",
+                tabBoard: "📌 البورد الفني (Board)",
+                scheduleOptions: "خيارات الجدول",
+                layoutStyle: "نمط التخطيط Layout",
+                selectFont: "الخط المستخدم Font",
+                fontSize: "حجم الخط Font Size",
+                fontIncrease: "تكبير ➕",
+                fontDecrease: "تصغير ➖",
+                colorPalette: "باليت الألوان Color Palette",
+                addNewItem: "إضافة عنصر جديد",
+                exportImage: "تصدير كصورة",
+                boardTools: "أدوات اللوحة",
+                addSticky: "إضافة ملاحظة ملونة",
+                boardCover: "صورة غلاف اللوحة",
+                changeBgBtn: "تغيير خلفية البورد",
+                uploadPolaroid: "رفع صورة بولارويد",
+                uploadPolaroidBtn: "رفع صورة للوحة",
+                addSticker: "إضافة ملصقات لطيفة (Stickers)",
+                clearBoard: "تنظيف اللوحة",
+                confirmClear: "هل تريد إزالة جميع العناصر من اللوحة الفنية؟",
+                btnLayoutTimeline: "مخطط زمني",
+                btnLayoutGrid: "جدول أسبوعي",
+                btnLayoutTable: "روتين الويكند",
+                defaultTitle: "روتين عطلة نهاية الأسبوع",
+                defaultSubtitle: "استرخاء • تجديد طاقة • استمتاع",
+                placeholderText: "مهمة جديدة / New Task",
+                weekDays: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
+                writeHere: "كتابة هنا... ✨",
+                sweetMemory: "ذكرى لطيفة 🌸"
+            },
+            en: {
+                logoTitle: "🌸 Aesthetic Planner",
+                tabSchedule: "📅 Schedule",
+                tabBoard: "📌 Board",
+                scheduleOptions: "Schedule Options",
+                layoutStyle: "Layout Style",
+                selectFont: "Selected Font",
+                fontSize: "Font Size",
+                fontIncrease: "Enlarge ➕",
+                fontDecrease: "Shrink ➖",
+                colorPalette: "Color Palette",
+                addNewItem: "Add New Item",
+                exportImage: "Export Image",
+                boardTools: "Board Tools",
+                addSticky: "Add Color Sticky Note",
+                boardCover: "Board Cover Image",
+                changeBgBtn: "Change Background",
+                uploadPolaroid: "Upload Polaroid Image",
+                uploadPolaroidBtn: "Upload to Board",
+                addSticker: "Add Cute Stickers",
+                clearBoard: "Clean Board",
+                confirmClear: "Do you want to remove all items from the Board?",
+                btnLayoutTimeline: "Timeline",
+                btnLayoutGrid: "Weekly Schedule",
+                btnLayoutTable: "Weekend Routine",
+                defaultTitle: "MY WEEKEND ROUTINE",
+                defaultSubtitle: "Relax • Recharge • Enjoy",
+                placeholderText: "New Task",
+                weekDays: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
+                writeHere: "Write here... ✨",
+                sweetMemory: "Sweet Memory 🌸"
+            }
+        };
+
+        let currentLang = 'ar'; // Default language
+
         // Data Store
         let scheduleItems = [
             { time: "8:00 AM", text: "الاستيقاظ والتمارين الصباحية / Wake up & Stretch" },
@@ -821,24 +991,73 @@
             { time: "2:00 PM", text: "وقت حر للاستجمام ومشاهدة فيلم مفضل / Movie Chill time 🍿" }
         ];
 
+        // Unique tasks holder for the weekly grid to give user full independence
+        let gridWeeklyItems = {
+            'SUN': [{ time: "09:00 AM", text: "Plan of the day" }],
+            'MON': [],
+            'TUE': [],
+            'WED': [],
+            'THU': [],
+            'FRI': [],
+            'SAT': []
+        };
+
         let currentStyle = 'timeline';
         let baseFontSize = 16;
         let activeThemeColor = '#fbcbc9';
 
         // Tab Switching
-        function switchTab(pageId) {
+        function switchTab(pageId, event) {
             document.querySelectorAll('.page-container').forEach(p => p.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             
             document.getElementById(pageId).classList.add('active');
-            event.target.classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Language toggle mechanism
+        function toggleLanguage() {
+            currentLang = currentLang === 'ar' ? 'en' : 'ar';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            applyTranslations();
+            renderSchedule();
+        }
+
+        function applyTranslations() {
+            const trans = i18n[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (trans[key]) {
+                    el.innerText = trans[key];
+                }
+            });
+
+            // Update layout selection labels
+            document.getElementById('btn-layout-timeline').innerText = trans.btnLayoutTimeline;
+            document.getElementById('btn-layout-grid').innerText = trans.btnLayoutGrid;
+            document.getElementById('btn-layout-table').innerText = trans.btnLayoutTable;
+
+            // Set titles inside canvas if they are unmodified defaults
+            const titleEl = document.getElementById('editable-title');
+            const subEl = document.getElementById('editable-subtitle');
+            if (titleEl.innerText === i18n.ar.defaultTitle || titleEl.innerText === i18n.en.defaultTitle) {
+                titleEl.innerText = trans.defaultTitle;
+            }
+            if (subEl.innerText === i18n.ar.defaultSubtitle || subEl.innerText === i18n.en.defaultSubtitle) {
+                subEl.innerText = trans.defaultSubtitle;
+            }
         }
 
         // --- SCHEDULE CORE ---
         function setScheduleStyle(styleName) {
             currentStyle = styleName;
             document.querySelectorAll('.layout-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            
+            if (styleName === 'timeline') document.getElementById('btn-layout-timeline').classList.add('active');
+            if (styleName === 'grid') document.getElementById('btn-layout-grid').classList.add('active');
+            if (styleName === 'table') document.getElementById('btn-layout-table').classList.add('active');
+            
             renderSchedule();
         }
 
@@ -858,7 +1077,13 @@
         }
 
         function addNewScheduleItem() {
-            scheduleItems.push({ time: "12:00 PM", text: "مهمة جديدة / New Task" });
+            const labelText = i18n[currentLang].placeholderText;
+            if (currentStyle === 'grid') {
+                // Add to a specific active day, default to first day or prompt user
+                gridWeeklyItems['SUN'].push({ time: "12:00 PM", text: labelText });
+            } else {
+                scheduleItems.push({ time: "12:00 PM", text: labelText });
+            }
             renderSchedule();
         }
 
@@ -873,6 +1098,26 @@
 
         function updateItemTime(index, time) {
             scheduleItems[index].time = time;
+        }
+
+        // Weekly Grid dynamic functions
+        function addGridItem(dayKey) {
+            const labelText = i18n[currentLang].placeholderText;
+            gridWeeklyItems[dayKey].push({ time: "12:00 PM", text: labelText });
+            renderSchedule();
+        }
+
+        function removeGridItem(dayKey, index) {
+            gridWeeklyItems[dayKey].splice(index, 1);
+            renderSchedule();
+        }
+
+        function updateGridTime(dayKey, index, time) {
+            gridWeeklyItems[dayKey][index].time = time;
+        }
+
+        function updateGridText(dayKey, index, text) {
+            gridWeeklyItems[dayKey][index].text = text;
         }
 
         function renderSchedule() {
@@ -904,32 +1149,36 @@
                             <img id="timelineFrameImg" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400" alt="Inspiration">
                             <input type="file" id="timelineFrameUpload" accept="image/*" onchange="uploadTimelineImage(event)">
                         </div>
-                        <span style="font-family:'Caveat', cursive; font-size:18px; color:#8c7b72;">✨ My Moodboard</span>
+                        <span style="font-family:'Caveat', cursive; font-size:18px; color:#8c7b72;">✨ Moodboard</span>
                     </div>
                 </div>`;
                 renderArea.innerHTML = timelineHTML;
 
             } else if (currentStyle === 'grid') {
                 // Style 2 Render
-                const days = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+                const rawDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+                const i18nDays = i18n[currentLang].weekDays;
                 let gridHTML = `<div class="calendar-grid">`;
                 
-                days.forEach(day => {
+                rawDays.forEach((day, index) => {
                     gridHTML += `<div>
-                        <div class="grid-header-day">${day}</div>
+                        <div class="grid-header-day">${i18nDays[index]}</div>
                         <div class="grid-col">`;
                     
-                    scheduleItems.forEach((item, idx) => {
-                        if (Math.random() > 0.4) { // Populate randomly for demo
-                            gridHTML += `
-                                <div class="grid-card">
-                                    <div class="grid-card-time">${item.time}</div>
-                                    <div class="grid-card-text" contenteditable="true">${item.text.split('/')[0]}</div>
+                    const items = gridWeeklyItems[day] || [];
+                    items.forEach((item, idx) => {
+                        gridHTML += `
+                            <div class="grid-card">
+                                <div class="grid-card-actions">
+                                    <button class="action-btn" style="width:18px; height:18px; font-size:9px;" onclick="removeGridItem('${day}', ${idx})">❌</button>
                                 </div>
-                            `;
-                        }
+                                <div class="grid-card-time" contenteditable="true" onblur="updateGridTime('${day}', ${idx}, this.innerText)">${item.time}</div>
+                                <div class="grid-card-text" contenteditable="true" onblur="updateGridText('${day}', ${idx}, this.innerText)">${item.text}</div>
+                            </div>
+                        `;
                     });
 
+                    gridHTML += `<div class="grid-add-btn" onclick="addGridItem('${day}')">➕ Add</div>`;
                     gridHTML += `</div></div>`;
                 });
                 gridHTML += `</div>`;
@@ -1021,6 +1270,18 @@
             document.removeEventListener('mouseup', dragEnd);
         }
 
+        // Change Corkboard Background Cover
+        function uploadBoardBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('boardCanvas').style.backgroundImage = `url('${e.target.result}')`;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
         // Add elements to Corkboard
         function addStickyNote(bgColor) {
             const board = document.getElementById('boardCanvas');
@@ -1031,13 +1292,14 @@
             note.style.transform = `rotate(${(Math.random() * 10 - 5)}deg)`;
             note.onmousedown = dragStart;
 
+            const trans = i18n[currentLang];
             note.innerHTML = `
                 <div class="item-control-overlay">
                     <button class="btn-mini" onclick="rotateItem(this.parentNode.parentNode, 15)">🔄</button>
                     <button class="btn-mini" onclick="this.parentNode.parentNode.remove()">❌</button>
                 </div>
                 <div class="sticky-note" style="background-color: ${bgColor};">
-                    <div class="sticky-note-text" contenteditable="true">كتابة هنا... ✨</div>
+                    <div class="sticky-note-text" contenteditable="true">${trans.writeHere}</div>
                 </div>
             `;
             board.appendChild(note);
@@ -1063,6 +1325,7 @@
             card.style.transform = `rotate(${(Math.random() * 12 - 6)}deg)`;
             card.onmousedown = dragStart;
 
+            const trans = i18n[currentLang];
             card.innerHTML = `
                 <div class="item-control-overlay">
                     <button class="btn-mini" onclick="rotateItem(this.parentNode.parentNode, 15)">🔄</button>
@@ -1070,7 +1333,7 @@
                 </div>
                 <div class="polaroid">
                     <img src="${imgSrc}" alt="User board image">
-                    <div class="polaroid-caption" contenteditable="true">ذكرى لطيفة 🌸</div>
+                    <div class="polaroid-caption" contenteditable="true">${trans.sweetMemory}</div>
                 </div>
             `;
             board.appendChild(card);
@@ -1111,13 +1374,14 @@
         }
 
         function clearBoard() {
-            if (confirm("هل تريد إزالة جميع العناصر من اللوحة الفنية؟")) {
+            if (confirm(i18n[currentLang].confirmClear)) {
                 document.getElementById('boardCanvas').innerHTML = '';
             }
         }
 
         // Initialize App
         window.onload = () => {
+            applyTranslations();
             renderSchedule();
         }
     </script>
