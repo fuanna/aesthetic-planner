@@ -50,6 +50,31 @@
             z-index: 1000;
         }
 
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Hamburger Menu Icon */
+        .menu-trigger {
+            background: none;
+            border: none;
+            font-size: 26px;
+            color: var(--lana-wine);
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 8px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .menu-trigger:hover {
+            background: rgba(114, 37, 31, 0.08);
+        }
+
         .logo {
             font-family: 'Playfair Display', 'Amiri', serif;
             font-size: 24px;
@@ -121,6 +146,137 @@
             background: var(--coquette-pink);
             color: white;
             border-color: var(--coquette-pink);
+        }
+
+        /* Slide-out Sidebar Drawer */
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(2px);
+            z-index: 2000;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .drawer-overlay.open {
+            display: block;
+            opacity: 1;
+        }
+
+        .drawer-menu {
+            position: fixed;
+            top: 0;
+            right: -320px; /* Hidden offscreen on RTL */
+            width: 320px;
+            height: 100vh;
+            background: #fff;
+            box-shadow: -5px 0 25px rgba(0,0,0,0.15);
+            z-index: 2001;
+            transition: right 0.3s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 30px 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* LTR adjustments for drawer position */
+        html[dir="ltr"] .drawer-menu {
+            right: auto;
+            left: -320px;
+        }
+
+        .drawer-overlay.open .drawer-menu {
+            right: 0;
+        }
+
+        html[dir="ltr"] .drawer-overlay.open .drawer-menu {
+            left: 0;
+            right: auto;
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px dashed #f5ece6;
+            padding-bottom: 15px;
+        }
+
+        .drawer-title {
+            font-family: 'Playfair Display', 'Cairo', serif;
+            font-weight: bold;
+            color: var(--lana-wine);
+            font-size: 20px;
+        }
+
+        .close-drawer-btn {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            color: #8c7b72;
+        }
+
+        .boards-list {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding-right: 5px;
+        }
+
+        .board-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #faf8f5;
+            padding: 12px 15px;
+            border-radius: 12px;
+            border: 1px solid #e0d1c2;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .board-list-item:hover {
+            background: var(--coquette-pink);
+            color: white;
+            border-color: var(--coquette-pink);
+        }
+
+        .board-list-item.active {
+            background: var(--lana-wine);
+            color: white;
+            border-color: var(--lana-wine);
+        }
+
+        .board-name-text {
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
+        }
+
+        .board-item-delete {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: inherit;
+            opacity: 0.7;
+            font-size: 14px;
+            padding: 2px;
+        }
+
+        .board-item-delete:hover {
+            opacity: 1;
+            transform: scale(1.1);
         }
 
         /* App Containers */
@@ -231,7 +387,7 @@
             opacity: 0.9;
         }
 
-        select, input[type="text"], input[type="time"], input[type="date"] {
+        select, input[type="text"] {
             width: 100%;
             padding: 12px;
             border-radius: 12px;
@@ -268,6 +424,40 @@
 
         .color-swatch.active {
             border-color: #5c4e46;
+        }
+
+        /* Color Picker Custom Styling */
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #fafcfc;
+            border: 1px solid #e0d1c2;
+            padding: 10px;
+            border-radius: 12px;
+        }
+
+        .custom-color-circle {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            width: 40px;
+            height: 40px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .custom-color-circle::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .custom-color-circle::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%;
         }
 
         /* SCHEDULE PAGES LAYOUTS */
@@ -418,7 +608,7 @@
             font-size: 16px;
         }
 
-        /* Cute Profile/Side Image for Timeline */
+        /* Timeline Sidebar Image Frame */
         .timeline-sidebar {
             width: 280px;
             display: flex;
@@ -612,7 +802,7 @@
             position: absolute;
             cursor: move;
             transition: box-shadow 0.2s;
-            padding: 15px;
+            padding: 10px;
             box-shadow: 2px 4px 10px rgba(0,0,0,0.15);
         }
 
@@ -620,15 +810,15 @@
             box-shadow: 5px 10px 20px rgba(0,0,0,0.25);
         }
 
-        /* Pin aesthetic */
-        .board-item::before {
+        /* Pin aesthetic (excluding stickers) */
+        .board-item:not(.sticker)::before {
             content: '';
             position: absolute;
-            top: -10px;
+            top: -5px;
             left: 50%;
             transform: translateX(-50%);
-            width: 16px;
-            height: 16px;
+            width: 14px;
+            height: 14px;
             background: radial-gradient(circle, #ff4d4d 40%, #cc0000 80%);
             border-radius: 50%;
             box-shadow: 0 4px 5px rgba(0,0,0,0.3);
@@ -638,7 +828,7 @@
         /* Polaroid layout */
         .polaroid {
             background: #fff;
-            padding: 12px 12px 35px 12px;
+            padding: 10px 10px 30px 10px;
             border-radius: 2px;
             width: 180px;
             text-align: center;
@@ -659,27 +849,51 @@
             outline: none;
         }
 
-        /* Sticky Notes style */
+        /* SHAPABLE STICKY NOTES */
         .sticky-note {
-            width: 170px;
-            height: 170px;
-            background: #fff5bc;
-            padding: 15px;
-            box-shadow: 2px 4px 8px rgba(0,0,0,0.1);
-            font-family: 'Caveat', 'Cairo', cursive;
-            font-size: 18px;
-            color: #3e3835;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
+            padding: 20px;
             overflow: hidden;
+            transition: clip-path 0.3s, border-radius 0.3s;
+        }
+
+        /* Note Shapes variants */
+        .shape-square {
+            width: 170px;
+            height: 170px;
+            border-radius: 12px;
+        }
+
+        .shape-circle {
+            width: 170px;
+            height: 170px;
+            border-radius: 50%;
+        }
+
+        .shape-heart {
+            width: 170px;
+            height: 170px;
+            /* Precise CSS Clip path representing a sweet heart shape */
+            clip-path: url(#heart-clip);
+            /* Fallback shape representation */
+            background-color: var(--coquette-pink);
+        }
+
+        .shape-rect {
+            width: 220px;
+            height: 140px;
+            border-radius: 20px;
         }
 
         .sticky-note-text {
             outline: none;
             width: 100%;
             max-height: 100%;
+            font-size: 18px;
+            word-break: break-word;
         }
 
         /* Stickers style */
@@ -692,9 +906,6 @@
             font-size: 60px;
             cursor: move;
             box-shadow: none !important;
-        }
-        .sticker::before {
-            display: none !important; /* No pins for stickers */
         }
 
         /* Delete / Transform Controls overlay on hover */
@@ -715,16 +926,22 @@
             background: white;
             border: 1px solid #ccc;
             border-radius: 50%;
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             cursor: pointer;
-            font-size: 10px;
+            font-size: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-mini:hover {
+            background: var(--coquette-pink);
+            color: white;
+        }
+
+        .btn-mini.delete-btn:hover {
             background: #ff4d4d;
             color: white;
         }
@@ -740,9 +957,38 @@
 </head>
 <body>
 
+    <!-- SVG Definitions for custom shapes clipping paths -->
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+            <clipPath id="heart-clip" clipPathUnits="objectBoundingBox">
+                <path d="M 0.5,0.28 C 0.5,0.28 0.44,-0.02 0.22,0.001 C -0.005,0.02 -0.05,0.36 0.17,0.58 L 0.5,0.92 L 0.83,0.58 C 1.05,0.36 1,-0.02 0.78,0.001 C 0.56,-0.02 0.5,0.28 0.5,0.28 Z"/>
+            </clipPath>
+        </defs>
+    </svg>
+
+    <!-- Slide-out Sidebar Drawer Overlay -->
+    <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer(false)">
+        <div class="drawer-menu" id="drawerMenu" onclick="event.stopPropagation()">
+            <div class="drawer-header">
+                <span class="drawer-title" data-i18n="savedBoards">لوحاتي المحفوظة</span>
+                <button class="close-drawer-btn" onclick="toggleDrawer(false)">✕</button>
+            </div>
+            
+            <button class="control-btn accent" onclick="createNewBoardSession()">➕ <span data-i18n="newBoard">إنشاء لوحة جديدة</span></button>
+            
+            <div class="boards-list" id="boardsListContainer">
+                <!-- Dynamic saved designs are listed here -->
+            </div>
+        </div>
+    </div>
+
     <!-- Header Navigation -->
     <header>
-        <a href="#" class="logo">🌸 <span data-i18n="logoTitle">Aesthetic Planner</span></a>
+        <div class="header-left">
+            <!-- Sidebar trigger hamburger -->
+            <button class="menu-trigger" onclick="toggleDrawer(true)">☰</button>
+            <a href="#" class="logo">🌸 <span data-i18n="logoTitle">Aesthetic Planner</span></a>
+        </div>
         <div class="nav-right-group">
             <div class="nav-tabs">
                 <button class="tab-btn active" onclick="switchTab('schedule-page', event)">
@@ -817,9 +1063,9 @@
                     <div class="aesthetic-doodle" style="top:75%; left:15%; font-size:35px;">🤍</div>
 
                     <div class="schedule-header">
-                        <div class="schedule-title" contenteditable="true" id="editable-title">MY WEEKEND ROUTINE</div>
+                        <div class="schedule-title" contenteditable="true" id="editable-title" onblur="saveHeaderContent()">MY WEEKEND ROUTINE</div>
                         <br>
-                        <div class="schedule-subtitle" contenteditable="true" id="editable-subtitle">Relax • Recharge • Enjoy</div>
+                        <div class="schedule-subtitle" contenteditable="true" id="editable-subtitle" onblur="saveHeaderContent()">Relax • Recharge • Enjoy</div>
                     </div>
 
                     <!-- Layout rendering area -->
@@ -841,18 +1087,40 @@
                 <h3 class="panel-title">📌 <span data-i18n="boardTools">أدوات اللوحة</span></h3>
                 
                 <div class="control-group">
-                    <label data-i18n="addSticky">إضافة ملاحظة ملونة</label>
-                    <div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:5px; margin-bottom:10px;">
-                        <button class="control-btn" style="background:#fff5bc;" onclick="addStickyNote('#fff5bc')">💛</button>
-                        <button class="control-btn" style="background:#ffcfe3;" onclick="addStickyNote('#ffcfe3')">🌸</button>
-                        <button class="control-btn" style="background:#d0f4de;" onclick="addStickyNote('#d0f4de')">🟢</button>
-                        <button class="control-btn" style="background:#a9def9;" onclick="addStickyNote('#a9def9')">🔵</button>
+                    <label data-i18n="chooseColor">اختر لون الملاحظة</label>
+                    <div class="color-picker-container">
+                        <input type="color" id="stickyColorPicker" class="custom-color-circle" value="#fbcbc9" onchange="updateSelectedColorLabel(this.value)">
+                        <span id="colorHexLabel" style="font-size:12px; font-weight:bold; color:#726259;">#fbcbc9</span>
                     </div>
                 </div>
 
                 <div class="control-group">
+                    <label data-i18n="chooseShape">اختر شكل الملاحظة Shape</label>
+                    <select id="stickyShapeSelect">
+                        <option value="shape-square">⏹️ مربع كلاسيكي (Square)</option>
+                        <option value="shape-rect">▱ مستطيل ناعم (Rectangle)</option>
+                        <option value="shape-circle">🟡 دائرة فنية (Circle)</option>
+                        <option value="shape-heart">❤️ قلب حب لطيف (Heart)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label data-i18n="chooseFont">نوع خط الملاحظة</label>
+                    <select id="stickyFontSelect">
+                        <option value="'Caveat', cursive">يدوي لطيف (Caveat)</option>
+                        <option value="'Tajawal', sans-serif">عصري مبسط (Tajawal)</option>
+                        <option value="'Aref Ruqaa', serif">رقعة فني (Aref Ruqaa)</option>
+                        <option value="'Amiri', serif">كلاسيكي دافئ (Amiri)</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <button class="control-btn accent" onclick="addCustomStickyNote()">📝 <span data-i18n="addStickyBtn">إضافة ملاحظة فنية</span></button>
+                </div>
+
+                <div class="control-group">
                     <label data-i18n="boardCover">صورة غلاف اللوحة</label>
-                    <button class="control-btn accent" onclick="document.getElementById('boardBgUpload').click()">🖼️ <span data-i18n="changeBgBtn">تغيير خلفية البورد</span></button>
+                    <button class="control-btn" onclick="document.getElementById('boardBgUpload').click()">🖼️ <span data-i18n="changeBgBtn">تغيير خلفية البورد</span></button>
                     <input type="file" id="boardBgUpload" accept="image/*" style="display:none;" onchange="uploadBoardBackground(event)">
                 </div>
 
@@ -882,27 +1150,7 @@
             <!-- Workspace: Interactive Corkboard Canvas -->
             <div class="main-workspace">
                 <div class="board-canvas" id="boardCanvas" style="background-image: url('https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&q=80&w=1400');">
-                    <!-- Default elements on board for inspiration -->
-                    <div class="board-item" style="top: 80px; left: 100px; transform: rotate(-5deg);" onmousedown="dragStart(event)">
-                        <div class="item-control-overlay">
-                            <button class="btn-mini" onclick="rotateItem(this.parentNode.parentNode, -15)">🔄</button>
-                            <button class="btn-mini" onclick="this.parentNode.parentNode.remove()">❌</button>
-                        </div>
-                        <div class="polaroid">
-                            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=400" alt="Joyful">
-                            <div class="polaroid-caption" contenteditable="true">Keep Smiling!</div>
-                        </div>
-                    </div>
-
-                    <div class="board-item" style="top: 150px; left: 450px; transform: rotate(4deg);" onmousedown="dragStart(event)">
-                        <div class="item-control-overlay">
-                            <button class="btn-mini" onclick="rotateItem(this.parentNode.parentNode, 15)">🔄</button>
-                            <button class="btn-mini" onclick="this.parentNode.parentNode.remove()">❌</button>
-                        </div>
-                        <div class="sticky-note" style="background-color: #ffcfe3;">
-                            <div class="sticky-note-text" contenteditable="true">ملاحظة اليوم: كوني سعيدة ومثابرة دوماً! 💕</div>
-                        </div>
-                    </div>
+                    <!-- Dynamic Elements will load here -->
                 </div>
             </div>
 
@@ -945,7 +1193,14 @@
                 placeholderText: "مهمة جديدة / New Task",
                 weekDays: ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'],
                 writeHere: "كتابة هنا... ✨",
-                sweetMemory: "ذكرى لطيفة 🌸"
+                sweetMemory: "ذكرى لطيفة 🌸",
+                chooseColor: "اختر لون الملاحظة",
+                chooseShape: "اختر شكل الملاحظة Shape",
+                chooseFont: "نوع خط الملاحظة",
+                addStickyBtn: "إضافة ملاحظة فنية",
+                savedBoards: "لوحاتي المحفوظة",
+                newBoard: "إنشاء لوحة وجدول جديد",
+                defaultBoardName: "لوحة جديدة"
             },
             en: {
                 logoTitle: "🌸 Aesthetic Planner",
@@ -977,34 +1232,301 @@
                 placeholderText: "New Task",
                 weekDays: ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'],
                 writeHere: "Write here... ✨",
-                sweetMemory: "Sweet Memory 🌸"
+                sweetMemory: "Sweet Memory 🌸",
+                chooseColor: "Choose Note Color",
+                chooseShape: "Choose Note Shape",
+                chooseFont: "Note Font Family",
+                addStickyBtn: "Add Aesthetic Note",
+                savedBoards: "Saved Boards & Designs",
+                newBoard: "Create New Board",
+                defaultBoardName: "New Session Board"
             }
         };
 
-        let currentLang = 'ar'; // Default language
+        let currentLang = 'ar'; 
 
-        // Data Store
-        let scheduleItems = [
+        // Default layout items for initialization
+        const defaultScheduleItems = [
             { time: "8:00 AM", text: "الاستيقاظ والتمارين الصباحية / Wake up & Stretch" },
             { time: "9:30 AM", text: "فطور صحي ولذيذ / Yummy Healthy Breakfast 🍓" },
             { time: "11:00 AM", text: "قراءة كتاب وتطوير الذات / Study or reading time" },
             { time: "2:00 PM", text: "وقت حر للاستجمام ومشاهدة فيلم مفضل / Movie Chill time 🍿" }
         ];
 
-        // Unique tasks holder for the weekly grid to give user full independence
-        let gridWeeklyItems = {
+        const defaultGridItems = {
             'SUN': [{ time: "09:00 AM", text: "Plan of the day" }],
-            'MON': [],
-            'TUE': [],
-            'WED': [],
-            'THU': [],
-            'FRI': [],
-            'SAT': []
+            'MON': [], 'TUE': [], 'WED': [], 'THU': [], 'FRI': [], 'SAT': []
         };
 
+        const defaultBoardItems = [
+            {
+                type: 'polaroid',
+                imgSrc: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=400',
+                caption: 'Keep Smiling!',
+                top: 80, left: 100, rotation: -5
+            },
+            {
+                type: 'sticky',
+                bgColor: '#ffcfe3',
+                text: 'ملاحظة اليوم: كوني سعيدة ومثابرة دوماً! 💕',
+                shape: 'shape-square',
+                fontFamily: "'Caveat', cursive",
+                top: 150, left: 450, rotation: 4
+            }
+        ];
+
+        // BOARD SESSION DATABASE (MULTIPLE BOARDS CO-EXISTENCE ENGINE)
+        let boardsDatabase = []; 
+        let activeBoardId = null;
+
+        // Current Active Board runtime variables
+        let scheduleItems = [];
+        let gridWeeklyItems = {};
+        let boardItems = [];
         let currentStyle = 'timeline';
         let baseFontSize = 16;
         let activeThemeColor = '#fbcbc9';
+        let activeFont = "'Quicksand', 'Tajawal', sans-serif";
+        let storedTimelineImgSrc = "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400";
+        let boardBackgroundUrl = "https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&q=80&w=1400";
+        let headerTitle = "MY WEEKEND ROUTINE";
+        let headerSub = "Relax • Recharge • Enjoy";
+
+        // Local Storage Init & Sync Engine for Multiple Sessions
+        function loadDatabase() {
+            boardsDatabase = JSON.parse(localStorage.getItem('ap_sessions_db')) || [];
+            activeBoardId = localStorage.getItem('ap_active_session_id');
+
+            // If empty database, create a default startup board
+            if (boardsDatabase.length === 0) {
+                const defaultBoardSession = {
+                    id: 'board_' + Date.now(),
+                    name: 'لوحة الروتين الوردية 🌸',
+                    scheduleItems: defaultScheduleItems,
+                    gridWeeklyItems: defaultGridItems,
+                    boardItems: defaultBoardItems,
+                    currentStyle: 'timeline',
+                    baseFontSize: 16,
+                    activeThemeColor: '#fbcbc9',
+                    activeFont: "'Quicksand', 'Tajawal', sans-serif",
+                    timelineImg: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400",
+                    boardBg: "https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&q=80&w=1400",
+                    headerTitle: "MY WEEKEND ROUTINE",
+                    headerSub: "Relax • Recharge • Enjoy"
+                };
+                boardsDatabase.push(defaultBoardSession);
+                activeBoardId = defaultBoardSession.id;
+                localStorage.setItem('ap_sessions_db', JSON.stringify(boardsDatabase));
+                localStorage.setItem('ap_active_session_id', activeBoardId);
+            }
+
+            // Sync the active board structure to the variables
+            setActiveBoardSession(activeBoardId);
+        }
+
+        function setActiveBoardSession(id) {
+            const session = boardsDatabase.find(b => b.id === id) || boardsDatabase[0];
+            activeBoardId = session.id;
+            localStorage.setItem('ap_active_session_id', activeBoardId);
+
+            // Sync state
+            scheduleItems = session.scheduleItems || [];
+            gridWeeklyItems = session.gridWeeklyItems || {};
+            boardItems = session.boardItems || [];
+            currentStyle = session.currentStyle || 'timeline';
+            baseFontSize = session.baseFontSize || 16;
+            activeThemeColor = session.activeThemeColor || '#fbcbc9';
+            activeFont = session.activeFont || "'Quicksand', 'Tajawal', sans-serif";
+            storedTimelineImgSrc = session.timelineImg || "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400";
+            boardBackgroundUrl = session.boardBg || "https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&q=80&w=1400";
+            headerTitle = session.headerTitle || "MY WEEKEND ROUTINE";
+            headerSub = session.headerSub || "Relax • Recharge • Enjoy";
+
+            // Language config loading
+            currentLang = localStorage.getItem('ap_global_lang') || 'ar';
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+
+            // Sync settings inputs
+            document.getElementById('fontSelect').value = activeFont;
+            document.documentElement.style.setProperty('--coquette-pink', activeThemeColor);
+            document.getElementById('scheduleCanvas').style.fontFamily = activeFont;
+            document.getElementById('editable-title').innerText = headerTitle;
+            document.getElementById('editable-subtitle').innerText = headerSub;
+            document.getElementById('boardCanvas').style.backgroundImage = `url('${boardBackgroundUrl}')`;
+
+            // Draw layouts
+            renderSchedule();
+            renderBoard();
+            renderDrawerSessions();
+        }
+
+        function saveActiveBoardSessionToDB() {
+            // Read active layout headers from screen
+            headerTitle = document.getElementById('editable-title').innerText;
+            headerSub = document.getElementById('editable-subtitle').innerText;
+
+            const sessionIdx = boardsDatabase.findIndex(b => b.id === activeBoardId);
+            if (sessionIdx !== -1) {
+                // Compile live UI elements to boardItems list first
+                compileLiveBoardElements();
+
+                boardsDatabase[sessionIdx] = {
+                    id: activeBoardId,
+                    name: boardsDatabase[sessionIdx].name, // keep existing name
+                    scheduleItems,
+                    gridWeeklyItems,
+                    boardItems,
+                    currentStyle,
+                    baseFontSize,
+                    activeThemeColor,
+                    activeFont,
+                    timelineImg: storedTimelineImgSrc,
+                    boardBg: boardBackgroundUrl,
+                    headerTitle,
+                    headerSub
+                };
+                localStorage.setItem('ap_sessions_db', JSON.stringify(boardsDatabase));
+            }
+        }
+
+        // Compile elements visually positioned on board into data items safely
+        function compileLiveBoardElements() {
+            const liveItems = [];
+            document.querySelectorAll('#boardCanvas .board-item').forEach(el => {
+                const rotation = getRotationAngle(el);
+                const top = parseInt(el.style.top) || 100;
+                const left = parseInt(el.style.left) || 100;
+                
+                if (el.querySelector('.polaroid')) {
+                    liveItems.push({
+                        type: 'polaroid',
+                        imgSrc: el.querySelector('.polaroid img').src,
+                        caption: el.querySelector('.polaroid-caption').innerText,
+                        top, left, rotation
+                    });
+                } else if (el.querySelector('.sticky-note')) {
+                    const stickyEl = el.querySelector('.sticky-note');
+                    // parse current shape class list
+                    let matchedShape = 'shape-square';
+                    ['shape-square', 'shape-rect', 'shape-circle', 'shape-heart'].forEach(s => {
+                        if (stickyEl.classList.contains(s)) matchedShape = s;
+                    });
+                    
+                    liveItems.push({
+                        type: 'sticky',
+                        bgColor: stickyEl.style.backgroundColor,
+                        text: el.querySelector('.sticky-note-text').innerText,
+                        shape: matchedShape,
+                        fontFamily: stickyEl.style.fontFamily,
+                        top, left, rotation
+                    });
+                } else if (el.classList.contains('sticker')) {
+                    const clone = el.cloneNode(true);
+                    const overlay = clone.querySelector('.item-control-overlay');
+                    if (overlay) overlay.remove();
+                    const emoji = clone.innerText.trim();
+                    liveItems.push({
+                        type: 'sticker',
+                        emoji,
+                        top, left, rotation
+                    });
+                }
+            });
+            boardItems = liveItems;
+        }
+
+        function createNewBoardSession() {
+            const trans = i18n[currentLang];
+            const nameInput = prompt(currentLang === 'ar' ? 'ادخل اسم اللوحة الجديدة:' : 'Enter name for new board:', trans.defaultBoardName);
+            if (nameInput === null) return; // cancelled
+
+            const finalName = nameInput.trim() || trans.defaultBoardName;
+            const newSession = {
+                id: 'board_' + Date.now(),
+                name: finalName,
+                scheduleItems: [
+                    { time: "12:00 PM", text: trans.placeholderText }
+                ],
+                gridWeeklyItems: {
+                    'SUN': [], 'MON': [], 'TUE': [], 'WED': [], 'THU': [], 'FRI': [], 'SAT': []
+                },
+                boardItems: [],
+                currentStyle: 'timeline',
+                baseFontSize: 16,
+                activeThemeColor: '#fbcbc9',
+                activeFont: "'Quicksand', 'Tajawal', sans-serif",
+                timelineImg: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400",
+                boardBg: "https://images.unsplash.com/photo-1587582423116-ec07293f0395?auto=format&fit=crop&q=80&w=1400",
+                headerTitle: finalName,
+                headerSub: trans.defaultSubtitle
+            };
+
+            boardsDatabase.push(newSession);
+            localStorage.setItem('ap_sessions_db', JSON.stringify(boardsDatabase));
+            
+            // Switch to it
+            setActiveBoardSession(newSession.id);
+            toggleDrawer(false);
+        }
+
+        function deleteBoardSession(id, event) {
+            event.stopPropagation(); // don't open the board while deleting
+            if (boardsDatabase.length <= 1) {
+                alert(currentLang === 'ar' ? 'لا يمكن حذف اللوحة الأخيرة المتبقية!' : 'Cannot delete the only remaining board!');
+                return;
+            }
+
+            const confirmDel = confirm(currentLang === 'ar' ? 'هل أنتِ متأكدة من حذف هذه اللوحة وكل محتوياتها نهائياً؟' : 'Are you sure you want to delete this board?');
+            if (confirmDel) {
+                boardsDatabase = boardsDatabase.filter(b => b.id !== id);
+                localStorage.setItem('ap_sessions_db', JSON.stringify(boardsDatabase));
+                
+                // If we deleted the active one, fallback to first board in db list
+                if (activeBoardId === id) {
+                    activeBoardId = boardsDatabase[0].id;
+                }
+                setActiveBoardSession(activeBoardId);
+            }
+        }
+
+        // Drawer Sliding & Opening Control
+        function toggleDrawer(isOpen) {
+            const drawer = document.getElementById('drawerOverlay');
+            if (isOpen) {
+                drawer.classList.add('open');
+                renderDrawerSessions();
+            } else {
+                drawer.classList.remove('open');
+            }
+        }
+
+        function renderDrawerSessions() {
+            const list = document.getElementById('boardsListContainer');
+            list.innerHTML = '';
+
+            boardsDatabase.forEach(board => {
+                const isActive = board.id === activeBoardId;
+                const item = document.createElement('div');
+                item.className = `board-list-item ${isActive ? 'active' : ''}`;
+                item.onclick = () => {
+                    saveActiveBoardSessionToDB(); // auto-save current state before leaving
+                    setActiveBoardSession(board.id);
+                    toggleDrawer(false);
+                };
+
+                item.innerHTML = `
+                    <div class="board-name-text">📋 ${board.name}</div>
+                    <button class="board-item-delete" onclick="deleteBoardSession('${board.id}', event)">🗑️</button>
+                `;
+                list.appendChild(item);
+            });
+        }
+
+        // Color label visual updating
+        function updateSelectedColorLabel(val) {
+            document.getElementById('colorHexLabel').innerText = val;
+        }
 
         // Tab Switching
         function switchTab(pageId, event) {
@@ -1015,41 +1537,30 @@
             event.currentTarget.classList.add('active');
         }
 
-        // Language toggle mechanism
+        // Language toggle
         function toggleLanguage() {
             currentLang = currentLang === 'ar' ? 'en' : 'ar';
             document.documentElement.lang = currentLang;
             document.documentElement.dir = currentLang === 'ar' ? 'rtl' : 'ltr';
+            localStorage.setItem('ap_global_lang', currentLang);
             applyTranslations();
             renderSchedule();
+            renderDrawerSessions();
         }
 
         function applyTranslations() {
             const trans = i18n[currentLang];
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if (trans[key]) {
-                    el.innerText = trans[key];
-                }
+                if (trans[key]) el.innerText = trans[key];
             });
 
-            // Update layout selection labels
             document.getElementById('btn-layout-timeline').innerText = trans.btnLayoutTimeline;
             document.getElementById('btn-layout-grid').innerText = trans.btnLayoutGrid;
             document.getElementById('btn-layout-table').innerText = trans.btnLayoutTable;
-
-            // Set titles inside canvas if they are unmodified defaults
-            const titleEl = document.getElementById('editable-title');
-            const subEl = document.getElementById('editable-subtitle');
-            if (titleEl.innerText === i18n.ar.defaultTitle || titleEl.innerText === i18n.en.defaultTitle) {
-                titleEl.innerText = trans.defaultTitle;
-            }
-            if (subEl.innerText === i18n.ar.defaultSubtitle || subEl.innerText === i18n.en.defaultSubtitle) {
-                subEl.innerText = trans.defaultSubtitle;
-            }
         }
 
-        // --- SCHEDULE CORE ---
+        // --- SCHEDULE CORE CONTROLS ---
         function setScheduleStyle(styleName) {
             currentStyle = styleName;
             document.querySelectorAll('.layout-btn').forEach(btn => btn.classList.remove('active'));
@@ -1058,66 +1569,84 @@
             if (styleName === 'grid') document.getElementById('btn-layout-grid').classList.add('active');
             if (styleName === 'table') document.getElementById('btn-layout-table').classList.add('active');
             
+            saveActiveBoardSessionToDB();
             renderSchedule();
         }
 
         function changeScheduleFont(fontFamily) {
+            activeFont = fontFamily;
             document.getElementById('scheduleCanvas').style.fontFamily = fontFamily;
+            saveActiveBoardSessionToDB();
         }
 
         function adjustFontSize(dir) {
             baseFontSize += dir;
             document.getElementById('layoutRenderArea').style.fontSize = baseFontSize + 'px';
+            saveActiveBoardSessionToDB();
         }
 
         function setThemeColor(color) {
             activeThemeColor = color;
             document.documentElement.style.setProperty('--coquette-pink', color);
+            saveActiveBoardSessionToDB();
             renderSchedule();
         }
 
         function addNewScheduleItem() {
             const labelText = i18n[currentLang].placeholderText;
             if (currentStyle === 'grid') {
-                // Add to a specific active day, default to first day or prompt user
                 gridWeeklyItems['SUN'].push({ time: "12:00 PM", text: labelText });
             } else {
                 scheduleItems.push({ time: "12:00 PM", text: labelText });
             }
+            saveActiveBoardSessionToDB();
             renderSchedule();
         }
 
         function removeScheduleItem(index) {
             scheduleItems.splice(index, 1);
+            saveActiveBoardSessionToDB();
             renderSchedule();
         }
 
         function updateItemText(index, text) {
             scheduleItems[index].text = text;
+            saveActiveBoardSessionToDB();
         }
 
         function updateItemTime(index, time) {
             scheduleItems[index].time = time;
+            saveActiveBoardSessionToDB();
         }
 
-        // Weekly Grid dynamic functions
+        // Grid Actions
         function addGridItem(dayKey) {
             const labelText = i18n[currentLang].placeholderText;
             gridWeeklyItems[dayKey].push({ time: "12:00 PM", text: labelText });
+            saveActiveBoardSessionToDB();
             renderSchedule();
         }
 
         function removeGridItem(dayKey, index) {
             gridWeeklyItems[dayKey].splice(index, 1);
+            saveActiveBoardSessionToDB();
             renderSchedule();
         }
 
         function updateGridTime(dayKey, index, time) {
             gridWeeklyItems[dayKey][index].time = time;
+            saveActiveBoardSessionToDB();
         }
 
         function updateGridText(dayKey, index, text) {
             gridWeeklyItems[dayKey][index].text = text;
+            saveActiveBoardSessionToDB();
+        }
+
+        function saveHeaderContent() {
+            headerTitle = document.getElementById('editable-title').innerText;
+            headerSub = document.getElementById('editable-subtitle').innerText;
+            saveActiveBoardSessionToDB();
         }
 
         function renderSchedule() {
@@ -1126,7 +1655,6 @@
             renderArea.innerHTML = '';
 
             if (currentStyle === 'timeline') {
-                // Style 1 Render
                 let timelineHTML = `<div class="timeline-container">
                     <div class="timeline-items">`;
                 
@@ -1146,16 +1674,14 @@
                 timelineHTML += `</div>
                     <div class="timeline-sidebar">
                         <div class="aesthetic-frame" onclick="document.getElementById('timelineFrameUpload').click()">
-                            <img id="timelineFrameImg" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=400" alt="Inspiration">
+                            <img id="timelineFrameImg" src="${storedTimelineImgSrc}" alt="Inspiration">
                             <input type="file" id="timelineFrameUpload" accept="image/*" onchange="uploadTimelineImage(event)">
                         </div>
-                        <span style="font-family:'Caveat', cursive; font-size:18px; color:#8c7b72;">✨ Moodboard</span>
                     </div>
                 </div>`;
                 renderArea.innerHTML = timelineHTML;
 
             } else if (currentStyle === 'grid') {
-                // Style 2 Render
                 const rawDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
                 const i18nDays = i18n[currentLang].weekDays;
                 let gridHTML = `<div class="calendar-grid">`;
@@ -1185,7 +1711,6 @@
                 renderArea.innerHTML = gridHTML;
 
             } else if (currentStyle === 'table') {
-                // Style 3 Render
                 let tableHTML = `<table class="routine-table">`;
                 scheduleItems.forEach((item, index) => {
                     tableHTML += `
@@ -1203,19 +1728,19 @@
             }
         }
 
-        // Image uploads inside layouts
         function uploadTimelineImage(event) {
             const file = event.target.files[0];
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     document.getElementById('timelineFrameImg').src = e.target.result;
+                    storedTimelineImgSrc = e.target.result;
+                    saveActiveBoardSessionToDB();
                 }
                 reader.readAsDataURL(file);
             }
         }
 
-        // Export Canvas to beautiful image
         function exportScheduleImage() {
             const canvas = document.getElementById('scheduleCanvas');
             html2canvas(canvas, { scale: 2 }).then(canvasImage => {
@@ -1227,15 +1752,17 @@
         }
 
 
-        // --- CORKBOARD DRAG & DROP CORE ---
+        // --- CORKBOARD CORE & INTERACTIVITY ENGINE ---
         let draggedElement = null;
         let offsetX = 0;
         let offsetY = 0;
 
         function dragStart(e) {
+            // Prevent dragging if editing text
+            if (e.target.hasAttribute('contenteditable')) return;
+
             draggedElement = e.currentTarget;
             
-            // Bring to front
             const allItems = document.querySelectorAll('.board-item');
             allItems.forEach(item => item.style.zIndex = 1);
             draggedElement.style.zIndex = 10;
@@ -1256,7 +1783,6 @@
             let x = e.clientX - canvasRect.left - offsetX;
             let y = e.clientY - canvasRect.top - offsetY;
 
-            // Bounds constraint
             x = Math.max(0, Math.min(x, canvasRect.width - draggedElement.offsetWidth));
             y = Math.max(0, Math.min(y, canvasRect.height - draggedElement.offsetHeight));
 
@@ -1268,41 +1794,91 @@
             draggedElement = null;
             document.removeEventListener('mousemove', dragMove);
             document.removeEventListener('mouseup', dragEnd);
+            saveActiveBoardSessionToDB(); // Autosave positions on mouse up
         }
 
-        // Change Corkboard Background Cover
-        function uploadBoardBackground(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    document.getElementById('boardCanvas').style.backgroundImage = `url('${e.target.result}')`;
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        // Add elements to Corkboard
-        function addStickyNote(bgColor) {
+        function renderBoard() {
             const board = document.getElementById('boardCanvas');
-            const note = document.createElement('div');
-            note.className = 'board-item';
-            note.style.top = '150px';
-            note.style.left = '150px';
-            note.style.transform = `rotate(${(Math.random() * 10 - 5)}deg)`;
-            note.onmousedown = dragStart;
+            board.innerHTML = '';
 
+            boardItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'board-item';
+                card.style.top = item.top + 'px';
+                card.style.left = item.left + 'px';
+                card.style.transform = `rotate(${item.rotation || 0}deg)`;
+                card.onmousedown = dragStart;
+
+                if (item.type === 'polaroid') {
+                    card.innerHTML = `
+                        <div class="item-control-overlay">
+                            <button class="btn-mini" onclick="rotateItem(this.parentNode.parentNode, 15)">🔄</button>
+                            <button class="btn-mini delete-btn" onclick="removeBoardItem(this.parentNode.parentNode)">❌</button>
+                        </div>
+                        <div class="polaroid">
+                            <img src="${item.imgSrc}" alt="Board memory">
+                            <div class="polaroid-caption" contenteditable="true" onblur="saveActiveBoardSessionToDB()">${item.caption}</div>
+                        </div>
+                    `;
+                } else if (item.type === 'sticky') {
+                    const chosenShape = item.shape || 'shape-square';
+                    const chosenFont = item.fontFamily || "'Caveat', cursive";
+                    
+                    card.innerHTML = `
+                        <div class="item-control-overlay">
+                            <button class="btn-mini" onclick="rotateItem(this.parentNode.parentNode, 15)">🔄</button>
+                            <button class="btn-mini delete-btn" onclick="removeBoardItem(this.parentNode.parentNode)">❌</button>
+                        </div>
+                        <div class="sticky-note ${chosenShape}" style="background-color: ${item.bgColor}; font-family: ${chosenFont};">
+                            <div class="sticky-note-text" contenteditable="true" onblur="saveActiveBoardSessionToDB()">${item.text}</div>
+                        </div>
+                    `;
+                } else if (item.type === 'sticker') {
+                    card.className = 'board-item sticker';
+                    card.innerHTML = `
+                        <div class="item-control-overlay">
+                            <button class="btn-mini" onclick="rotateItem(this.parentNode.parentNode, 15)">🔄</button>
+                            <button class="btn-mini delete-btn" onclick="removeBoardItem(this.parentNode.parentNode)">❌</button>
+                        </div>
+                        ${item.emoji}
+                    `;
+                }
+                board.appendChild(card);
+            });
+        }
+
+        function removeBoardItem(itemEl) {
+            itemEl.remove();
+            saveActiveBoardSessionToDB();
+        }
+
+        // Add note using customized Color Picker & Custom Shapes
+        function addCustomStickyNote() {
             const trans = i18n[currentLang];
-            note.innerHTML = `
-                <div class="item-control-overlay">
-                    <button class="btn-mini" onclick="rotateItem(this.parentNode.parentNode, 15)">🔄</button>
-                    <button class="btn-mini" onclick="this.parentNode.parentNode.remove()">❌</button>
-                </div>
-                <div class="sticky-note" style="background-color: ${bgColor};">
-                    <div class="sticky-note-text" contenteditable="true">${trans.writeHere}</div>
-                </div>
-            `;
-            board.appendChild(note);
+            const customColor = document.getElementById('stickyColorPicker').value;
+            const chosenShape = document.getElementById('stickyShapeSelect').value;
+            const chosenFont = document.getElementById('stickyFontSelect').value;
+
+            boardItems.push({
+                type: 'sticky',
+                bgColor: customColor,
+                text: trans.writeHere,
+                shape: chosenShape,
+                fontFamily: chosenFont,
+                top: 150, left: 150, rotation: Math.random() * 10 - 5
+            });
+            saveActiveBoardSessionToDB();
+            renderBoard();
+        }
+
+        function addSticker(emoji) {
+            boardItems.push({
+                type: 'sticker',
+                emoji: emoji,
+                top: 100, left: 300, rotation: Math.random() * 20 - 10
+            });
+            saveActiveBoardSessionToDB();
+            renderBoard();
         }
 
         function uploadBoardImage(event) {
@@ -1310,79 +1886,64 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    createPolaroidOnBoard(e.target.result);
+                    const trans = i18n[currentLang];
+                    boardItems.push({
+                        type: 'polaroid',
+                        imgSrc: e.target.result,
+                        caption: trans.sweetMemory,
+                        top: 200, left: 200, rotation: Math.random() * 12 - 6
+                    });
+                    saveActiveBoardSessionToDB();
+                    renderBoard();
                 }
                 reader.readAsDataURL(file);
             }
         }
 
-        function createPolaroidOnBoard(imgSrc) {
-            const board = document.getElementById('boardCanvas');
-            const card = document.createElement('div');
-            card.className = 'board-item';
-            card.style.top = '200px';
-            card.style.left = '200px';
-            card.style.transform = `rotate(${(Math.random() * 12 - 6)}deg)`;
-            card.onmousedown = dragStart;
-
-            const trans = i18n[currentLang];
-            card.innerHTML = `
-                <div class="item-control-overlay">
-                    <button class="btn-mini" onclick="rotateItem(this.parentNode.parentNode, 15)">🔄</button>
-                    <button class="btn-mini" onclick="this.parentNode.parentNode.remove()">❌</button>
-                </div>
-                <div class="polaroid">
-                    <img src="${imgSrc}" alt="User board image">
-                    <div class="polaroid-caption" contenteditable="true">${trans.sweetMemory}</div>
-                </div>
-            `;
-            board.appendChild(card);
+        function uploadBoardBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('boardCanvas').style.backgroundImage = `url('${e.target.result}')`;
+                    boardBackgroundUrl = e.target.result;
+                    saveActiveBoardSessionToDB();
+                }
+                reader.readAsDataURL(file);
+            }
         }
 
-        function addSticker(emoji) {
-            const board = document.getElementById('boardCanvas');
-            const sticker = document.createElement('div');
-            sticker.className = 'board-item sticker';
-            sticker.style.top = '100px';
-            sticker.style.left = '300px';
-            sticker.style.transform = `rotate(${(Math.random() * 20 - 10)}deg)`;
-            sticker.onmousedown = dragStart;
-
-            sticker.innerHTML = `
-                <div class="item-control-overlay">
-                    <button class="btn-mini" onclick="rotateItem(this.parentNode.parentNode, 15)">🔄</button>
-                    <button class="btn-mini" onclick="this.parentNode.parentNode.remove()">❌</button>
-                </div>
-                ${emoji}
-            `;
-            board.appendChild(sticker);
+        function rotateItem(itemEl, amount) {
+            const currentAngle = getRotationAngle(itemEl);
+            const newAngle = currentAngle + amount;
+            itemEl.style.transform = `rotate(${newAngle}deg)`;
+            saveActiveBoardSessionToDB();
         }
 
-        function rotateItem(item, amount) {
-            // Get current rotation
-            const style = window.getComputedStyle(item);
+        function getRotationAngle(el) {
+            const style = window.getComputedStyle(el);
             const matrix = style.transform || style.webkitTransform || style.mozTransform;
-            let angle = 0;
             if (matrix && matrix !== 'none') {
                 const values = matrix.split('(')[1].split(')')[0].split(',');
                 const a = values[0];
                 const b = values[1];
-                angle = Math.round(Math.atan2(b, a) * (180/Math.PI));
+                return Math.round(Math.atan2(b, a) * (180/Math.PI));
             }
-            const newAngle = angle + amount;
-            item.style.transform = `rotate(${newAngle}deg)`;
+            return 0;
         }
 
         function clearBoard() {
             if (confirm(i18n[currentLang].confirmClear)) {
                 document.getElementById('boardCanvas').innerHTML = '';
+                boardItems = [];
+                saveActiveBoardSessionToDB();
             }
         }
 
-        // Initialize App
+        // Initialize App on window load
         window.onload = () => {
+            loadDatabase();
             applyTranslations();
-            renderSchedule();
         }
     </script>
 </body>
